@@ -1,5 +1,5 @@
 <head>
-  <title>Todo App</title>
+  <title>Absurd</title>
 </head>
 
 <body>
@@ -8,15 +8,25 @@
         ng-controller="TodosAppCtrl">
 
     <header>
-      <h1>Hi Leah</h1>
+      <h1>Absurd</h1>
+      <h3>Tasks to Complete: {{ incompleteCount() }}</h3>
     </header>
 
-    <form class="new-task" ng-submit="addTask(newTask); newTask='';">
+    <label class="hideCompleted">
+      <input type="checkbox" ng-model="hideCompleted"/>
+      Hide Completed Tasks
+    </label>
+
+    <form class="new-task" ng-submit="addTask(newTask);  newTask='';">
       <input type="text" ng-model="newTask" placeholder="New Task" name="text"/>
     </form>
 
     <ul>
-      <li ng-repeat="task in tasks | orderBy: 'created_at' : true">{{task.text}}</li>
+      <li ng-repeat="task in tasks" ng-class="{ 'checked': task.checked }">
+        <button class="delete" ng-click="tasks.remove(task)">&times;</button>
+        <input type="checkbox" ng-model="task.checked" class="toggle-checked">
+        <span class="text">{{task.text}}</span>
+      </li>
     </ul>
   </div>
 
