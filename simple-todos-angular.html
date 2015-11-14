@@ -1,0 +1,24 @@
+<head>
+  <title>Todo App</title>
+</head>
+
+<body>
+  <div  class="container"
+        ng-app="simple-todos"
+        ng-controller="TodosAppCtrl">
+
+    <header>
+      <h1>Hi Leah</h1>
+    </header>
+
+    <form class="new-task" ng-submit="addTask(newTask); newTask='';">
+      <input type="text" ng-model="newTask" placeholder="New Task" name="text"/>
+    </form>
+
+    <ul>
+      <li ng-repeat="task in tasks | orderBy: 'created_at' : true">{{task.text}}</li>
+    </ul>
+  </div>
+
+
+</body>
