@@ -22,6 +22,14 @@ if (Meteor.isClient) {
         return Tasks.find({ checked: { $ne: true } }).count();
       };
 
+      $scope.addComment = function (task, comment) {
+        $meteor.call('addComment', task._id, comment);
+      };
+
+      $scope.toggleComments = function (task) {
+        $meteor.call('toggleComments', task._id, !task.showComments);
+      };
+
       $scope.addTask = function(newTask) {
         $meteor.call('addTask', newTask);
       };
@@ -45,6 +53,20 @@ if (Meteor.isClient) {
 }
 
 Meteor.methods({
+  addComment: function (taskId, commentText) {
+    Tasks.update(taskId, { $push: { comments: {
+      text:       commentText,
+      createdAt:  new Date(),
+      owner:      Meteor.userId(),
+      username:   Meteor.user().username,
+      comments:   []
+    }}});
+  },
+
+  toggleComments: function (taskId, showComments) {
+    Tasks.update(taskId, { $set: { showComments: showComments }});
+  },
+
   addTask: function (text) {
     if (!Meteor.userId()) {
       throw new Meteor.Error('not-authorized');
@@ -54,7 +76,8 @@ Meteor.methods({
       text:       text,
       createdAt:  new Date(),
       owner:      Meteor.userId(),
-      username:   Meteor.user().username
+      username:   Meteor.user().username,
+      comments:   []
     });
   },
 

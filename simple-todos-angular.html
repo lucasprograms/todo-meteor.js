@@ -9,13 +9,15 @@
 
     <header>
       <h1>Absurd</h1>
+      <br>
       <h3>Tasks to Complete: {{ incompleteCount() }}</h3>
     </header>
 
     <br>
-    <label class="hideCompleted">
-      <input type="checkbox" ng-model="hideCompleted"/>
-      Hide Completed Tasks
+    <label class="checkbox-label" for="toggle" class="hideCompleted">
+      <input class="checkbox-input" id="toggle" type="checkbox" ng-model="hideCompleted"/>
+      <span ng-hide="hideCompleted" class="checkbox-span">Hide Completed Tasks</span>
+      <span ng-show="hideCompleted" class="checkbox-span">Show Completed Tasks</span>
     </label>
 
     <br><br>
@@ -24,7 +26,7 @@
     <form class="new-task"
           ng-submit="addTask(newTask);  newTask='';"
           ng-show="$root.currentUser">
-      <input type="text" ng-model="newTask" placeholder="New Task" name="text"/>
+      <input class="new-task-input" type="text" ng-model="newTask" placeholder=" New Task" name="text"/>
     </form>
 
     <ul>
@@ -39,6 +41,21 @@
         <span class="text">
           <strong>{{ task.username }}</strong> - {{task.text}}
         </span>
+        <button ng-click="toggleComments(task)" class="toggle-comments">{{ task.showComments ? 'Hide' : 'Show' }} Comments</button>
+
+        <div class="comments" ng-show="task.showComments">
+          <form class="new-comment"
+                ng-submit="addComment(task, newComment); newComment=''">
+            <input class="new-comment-input" ng-model="newComment" type="text"
+                   placeholder=" New Comment" name="text"/>
+          </form>
+          <ul>
+            <li ng-repeat="comment in task.comments">
+              {{ comment.username }} - {{ comment.text }}
+            </li>
+          </ul>
+        </div>
+
       </li>
     </ul>
   </div>
