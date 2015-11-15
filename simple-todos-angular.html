@@ -12,12 +12,14 @@
       <h3>Tasks to Complete: {{ incompleteCount() }}</h3>
     </header>
 
+    <br>
     <label class="hideCompleted">
       <input type="checkbox" ng-model="hideCompleted"/>
       Hide Completed Tasks
     </label>
 
-    <login-buttons></login-buttons>
+    <br><br>
+    <login-buttons><br></login-buttons>
 
     <form class="new-task"
           ng-submit="addTask(newTask);  newTask='';"

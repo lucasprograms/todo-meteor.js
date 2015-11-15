@@ -10,6 +10,8 @@ if (Meteor.isClient) {
   angular.module('simple-todos').controller('TodosAppCtrl', ['$scope', '$meteor',
     function ($scope, $meteor) {
 
+      $scope.$meteorSubscribe('tasks');
+
       $scope.tasks = $meteor.collection(function () {
         return Tasks.find($scope.getReactively('query'), {
           sort: { createdAt: -1 }
@@ -65,8 +67,8 @@ Meteor.methods({
   }
 });
 
-// if (Meteor.isServer) {
-//   Meteor.startup(function () {
-//     // code to run on server at startup
-//   });
-// }
+if (Meteor.isServer) {
+  Meteor.publish('tasks', function() {
+    return Tasks.find();
+  });
+}
