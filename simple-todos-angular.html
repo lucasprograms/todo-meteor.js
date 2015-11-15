@@ -17,18 +17,27 @@
       Hide Completed Tasks
     </label>
 
-    <form class="new-task" ng-submit="addTask(newTask);  newTask='';">
+    <login-buttons></login-buttons>
+
+    <form class="new-task"
+          ng-submit="addTask(newTask);  newTask='';"
+          ng-show="$root.currentUser">
       <input type="text" ng-model="newTask" placeholder="New Task" name="text"/>
     </form>
 
     <ul>
       <li ng-repeat="task in tasks" ng-class="{ 'checked': task.checked }">
-        <button class="delete" ng-click="tasks.remove(task)">&times;</button>
-        <input type="checkbox" ng-model="task.checked" class="toggle-checked">
-        <span class="text">{{task.text}}</span>
+        <button class="delete" ng-click="deleteTask(task)"
+                ng-show="task.username === $root.currentUser.username">
+          &times;
+        </button>
+        <input type="checkbox" ng-checked="task.checked"
+               ng-click="setChecked(task)" class="toggle-checked"
+               ng-show="task.username === $root.currentUser.username">
+        <span class="text">
+          <strong>{{ task.username }}</strong> - {{task.text}}
+        </span>
       </li>
     </ul>
   </div>
-
-
 </body>
