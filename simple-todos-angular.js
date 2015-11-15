@@ -1,5 +1,4 @@
 Tasks = new Mongo.Collection('tasks');
-Comments = new Mongo.Collection('comments');
 
 if (Meteor.isClient) {
   Accounts.ui.config({
@@ -60,7 +59,8 @@ if (Meteor.isClient) {
 Meteor.methods({
   addComment: function (taskId, commentText) {
     Tasks.update(taskId, { $push: { comments: {
-      _id:        new Meteor.Collection.ObjectID(),
+      _id:        _.random(0, 100000000000000000),
+      // new Meteor.Collection.ObjectID() presents issue when deleting 
       text:       commentText,
       createdAt:  new Date(),
       owner:      Meteor.userId(),
@@ -70,7 +70,6 @@ Meteor.methods({
   },
 
   deleteComment: function (taskId, commentId) {
-    debugger
     Tasks.update(taskId, { $pull: { comments: { _id: commentId }} });
   },
 
