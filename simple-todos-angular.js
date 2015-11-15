@@ -1,4 +1,5 @@
 Tasks = new Mongo.Collection('tasks');
+Comments = new Mongo.Collection('comments');
 
 if (Meteor.isClient) {
   Accounts.ui.config({
@@ -24,6 +25,10 @@ if (Meteor.isClient) {
 
       $scope.addComment = function (task, comment) {
         $meteor.call('addComment', task._id, comment);
+      };
+
+      $scope.deleteComment = function (task, comment) {
+        $meteor.call('deleteComment', task._id, comment._id);
       };
 
       $scope.toggleComments = function (task) {
@@ -55,6 +60,7 @@ if (Meteor.isClient) {
 Meteor.methods({
   addComment: function (taskId, commentText) {
     Tasks.update(taskId, { $push: { comments: {
+      _id:        new Meteor.Collection.ObjectID(),
       text:       commentText,
       createdAt:  new Date(),
       owner:      Meteor.userId(),
@@ -63,8 +69,13 @@ Meteor.methods({
     }}});
   },
 
+  deleteComment: function (taskId, commentId) {
+    debugger
+    Tasks.update(taskId, { $pull: { comments: { _id: commentId }} });
+  },
+
   toggleComments: function (taskId, showComments) {
-    Tasks.update(taskId, { $set: { showComments: showComments }});
+    Tasks.update(taskId, { $set: { showComments: showComments } });
   },
 
   addTask: function (text) {
