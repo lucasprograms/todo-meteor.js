@@ -194,11 +194,6 @@
 
   .set-private {
     width: 20px;
-    cursor: pointer;
-  }
-
-  .set-private:hover {
-    color: #777777;
   }
 
   /* toggle completed tasks */
@@ -246,6 +241,12 @@
 
   .dropdown-toggle:focus {
     outline: 0;
+  }
+
+  /* comment items */
+
+  li.comment-list-item {
+    margin-left: 0;
   }
 
   /* media */

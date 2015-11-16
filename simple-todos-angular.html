@@ -100,7 +100,7 @@
               <li ng-click="setChecked(task)"
                   ng-show="task.username === $root.currentUser.username"
                   class="dropdown-item">
-                  Mark as {{ task.completed ? 'Incomplete' : 'Complete' }}</li>
+                  Mark as {{ task.checked ? 'Incomplete' : 'Complete' }}</li>
 
               <!-- toggle public/private -->
 
@@ -132,7 +132,9 @@
 
               <!-- comments form -->
 
-              <li ng-show="$root.currentUser" class="list-item">
+              <li ng-show="$root.currentUser"
+                  class="list-item comment-list-item"
+                  ng-class="{'private': task.private}">
                 <form class="new-comment"
                       ng-submit="addComment(task, newComment); newComment=''">
                 <input class="new-comment-input" ng-model="newComment" type="text"
@@ -142,7 +144,9 @@
 
               <!-- comments list -->
 
-              <li ng-repeat="comment in task.comments" class="list-item">
+              <li ng-repeat="comment in task.comments"
+                  class="list-item comment-list-item"
+                  ng-class="{'private': task.private}">
                 {{ comment.username }} - {{ comment.text }}
                 <i class="fa fa-close delete"
                    ng-click="deleteComment(task, comment)"
