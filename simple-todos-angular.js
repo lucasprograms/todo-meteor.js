@@ -48,7 +48,34 @@ if (Meteor.isClient) {
         $meteor.call('toggleComments', task._id, !task.showComments);
       };
 
+      // upvotes & downvotes
+
+      $scope.upvote = function (task, currentUser) {
+        $meteor.call('upvote', task._id, currentUser._id);
+      };
+
+      $scope.downvote = function (task, currentUser) {
+        $meteor.call('downvote', task._id, currentUser._id);
+      };
+
+      $scope.votes = function (task) {
+        return calculateVotes(task.upvotes, task.downvotes);
+      };
+
+      $scope.upvoted = function (task, currentUser) {
+        // debugger
+        return Tasks.find({$and: [{_id: task._id}, {upvotes : { $elemMatch : {_id : currentUser._id }}}]}).count() > 0;
+      };
+
+      $scope.downvoted = function (task, currentUser) {
+        return Tasks.find({$and: [{_id: task._id}, {downvotes : { $elemMatch : {_id : currentUser._id }}}]}).count() > 0;
+      };
+
       // utility
+
+      calculateVotes = function (upvotes, downvotes) {
+        return upvotes.length - downvotes.length;
+      };
 
       $scope.incompleteCount = function () {
         return Tasks.find({ checked: { $ne: true } }).count();
@@ -65,6 +92,35 @@ if (Meteor.isClient) {
 }
 
 Meteor.methods({
+
+  // task methods
+
+  addTask: function (text) {
+    if (!Meteor.userId()) {
+      throw new Meteor.Error('not-authorized');
+    }
+
+    Tasks.insert({
+      text:       text,
+      createdAt:  new Date(),
+      owner:      Meteor.userId(),
+      username:   Meteor.user().username,
+      upvotes:    [],
+      downvotes:  [],
+      comments:   []
+    });
+  },
+
+  deleteTask: function (taskId) {
+    Tasks.remove(taskId);
+  },
+
+  setChecked: function (taskId, setChecked) {
+    Tasks.update(taskId, { $set: { checked: setChecked }});
+  },
+
+  // comment methods
+
   addComment: function (taskId, commentText) {
     if (!Meteor.userId()) {
       throw new Meteor.Error('not-authorized');
@@ -77,8 +133,6 @@ Meteor.methods({
       createdAt:  new Date(),
       owner:      Meteor.userId(),
       username:   Meteor.user().username,
-      upvotes:    [],
-      downvotes:  [],
       comments:   []
     }}});
   },
@@ -91,27 +145,37 @@ Meteor.methods({
     Tasks.update(taskId, { $set: { showComments: showComments } });
   },
 
-  addTask: function (text) {
-    if (!Meteor.userId()) {
-      throw new Meteor.Error('not-authorized');
+  // upvote methods
+
+  upvote: function (taskId, currentUserId) {
+
+    if (Tasks.find({$and: [{_id: taskId}, {upvotes : { $elemMatch : {_id : currentUserId }}}]}).count() > 0) {
+      Tasks.update(taskId, { $pull: { upvotes: { _id: currentUserId  }}});
+    } else {
+      Tasks.update(taskId, { $pull: { downvotes: { _id: currentUserId  }}});
+      Tasks.update(taskId, { $push: { upvotes:   { _id: currentUserId  }}});
     }
 
-    Tasks.insert({
-      text:       text,
-      createdAt:  new Date(),
-      owner:      Meteor.userId(),
-      username:   Meteor.user().username,
-      comments:   []
-    });
   },
 
-  deleteTask: function (taskId) {
-    Tasks.remove(taskId);
+  downvote: function (taskId, currentUserId) {
+
+    if (Tasks.find({$and: [{_id: taskId}, {downvotes : { $elemMatch : {_id : currentUserId }}}]}).count() > 0) {
+      Tasks.update(taskId, { $pull: { downvotes:   { _id: currentUserId  }}});
+    } else {
+      Tasks.update(taskId, { $pull: { upvotes: { _id: currentUserId  }}});
+      Tasks.update(taskId, { $push: { downvotes:   { _id: currentUserId  }}});
+    }
+
   },
 
-  setChecked: function (taskId, setChecked) {
-    Tasks.update(taskId, { $set: { checked: setChecked }});
+  upvoted: function (taskId, currentUserId) {
+    return Tasks.find({$and: [{_id: taskId}, {upvotes : { $elemMatch : {_id : currentUserId }}}]}).count() > 0;
+  },
+
+  downvoted: function (taskId, currentUserId) {
   }
+
 });
 
 if (Meteor.isServer) {
