@@ -193,6 +193,7 @@
   }
 
   .set-private {
+    width: 20px;
     cursor: pointer;
   }
 

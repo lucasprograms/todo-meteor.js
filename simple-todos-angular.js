@@ -196,6 +196,7 @@ Meteor.methods({
   },
 
   downvoted: function (taskId, currentUserId) {
+    return Tasks.find({$and: [{_id: taskId}, {downvotes : { $elemMatch : {_id : currentUserId }}}]}).count() > 0;
   }
 
 });

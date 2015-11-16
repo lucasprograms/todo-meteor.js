@@ -50,10 +50,12 @@
 
         <div class="voting-wrapper">
           <i class="fa fa-sort-up fa-2x vote-marker"
-             ng-click="upvote(task, $root.currentUser)"></i>
+             ng-click="upvote(task, $root.currentUser)"
+             ng-class="{voted: upvoted(task, $root.currentUser)}"></i>
           <span class="votes">{{ votes(task) }}</span>
           <i class="fa fa-sort-down fa-2x vote-marker"
-             ng-click="downvote(task, $root.currentUser)"></i>
+             ng-click="downvote(task, $root.currentUser)"
+             ng-class="{voted: downvoted(task, $root.currentUser)}"></i>
         </div>
 
         <!-- content for tasks -->
@@ -66,8 +68,7 @@
 
           <i class="fa fa-lg set-private"
              ng-class="{ 'fa-user': task.private, 'fa-globe': !task.private }"
-             ng-if="task.owner === $root.currentUser._id"
-             ng-click="setPrivate(task)"></i>
+             ng-if="task.owner === $root.currentUser._id"></i>
 
 
           <!-- task details -->
@@ -101,8 +102,17 @@
                   class="dropdown-item">
                   Mark as {{ task.completed ? 'Incomplete' : 'Complete' }}</li>
 
+              <!-- toggle public/private -->
+
+              <li ng-click="setPrivate(task)"
+                  ng-show="task.username === $root.currentUser.username"
+                  class="dropdown-item">
+                  Mark as {{ task.private ? 'Public' : 'Private' }}</li>
+
               <!-- separator -->
-              <li role="separator" class="divider"></li>
+              <li role="separator" class="divider"
+                  ng-show="task.username === $root.currentUser.username">
+              </li>
 
               <!-- delete task button -->
               <li ng-click="deleteTask(task)"
