@@ -41,6 +41,22 @@ header {
   display: block;
 }
 
+.login-link-text {
+  float: right;
+  margin: 15px;
+  padding: 5px;
+  border: 1px solid #000000;
+}
+
+#login-dropdown-list {
+  top: 15px;
+  left: 325px;
+}
+
+a.login-close-text {
+  float: right;
+}
+
 h1, h3 {
   color: #ffffff;
   font-size: 1.5em;
@@ -83,6 +99,11 @@ ul {
   font-size: 1em;
   border: none;
   position: relative;
+  cursor: pointer;
+}
+
+.delete:hover {
+  color: #777777;
 }
 
 .toggle-comments {
@@ -146,10 +167,6 @@ header .hide-completed {
 
 .checkbox-input {
   display: none;
-}
-
-.checkbox-span {
-  width: 200px;
 }
 
 @media (max-width: 600px) {
