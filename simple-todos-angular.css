@@ -16,11 +16,8 @@ body {
 
   font-size: 14px;
 }
-/*
-.new-task-input {
-  padding: 0 0 0 15px;
-  border: 1px solid #000000;
-}*/
+
+
 
 .container {
   max-width: 600px;
@@ -73,10 +70,10 @@ form {
 }
 
 .new-task input {
-  margin: 0 0 0 15px;
+  margin: 0 0 15px 15px;
   border: 1px solid #000000;
   box-sizing: border-box;
-  padding: 10px 0;
+  padding: 15px 5px;
   background: transparent;
   padding-right: 80px;
   font-size: 1em;
@@ -110,6 +107,7 @@ ul {
   float: right;
   border: 1px solid #000000;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .toggle-comments:hover {
@@ -150,6 +148,16 @@ header .hide-completed {
 }
 
 .checkbox-label {
+
+
+}
+
+.checkbox-span:hover {
+  background: #888888;
+  color: #000000;
+}
+
+.checkbox-span {
   border: 1px solid #000000;
   border-right: 1px solid #000000;
   padding: 5px;
@@ -158,11 +166,6 @@ header .hide-completed {
   background: #bbbbbb;
   color: #222222;
   transition: background-color 0.2s;
-}
-
-.checkbox-label:hover {
-  background: #888888;
-  color: #000000;
 }
 
 .checkbox-input {

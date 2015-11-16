@@ -1,4 +1,4 @@
-<head>
+<head><!-- Latest compiled and minified CSS -->
   <title>Absurd</title>
 </head>
 
@@ -47,12 +47,16 @@
         <button ng-click="toggleComments(task)" class="toggle-comments">{{ task.showComments ? 'Hide' : 'Show' }} Comments</button>
 
         <div class="comments" ng-show="task.showComments">
-          <form class="new-comment"
-                ng-submit="addComment(task, newComment); newComment=''">
-            <input class="new-comment-input" ng-model="newComment" type="text"
-                   placeholder=" New Comment" name="text"/>
-          </form>
+
           <ul>
+            <strong><li ng-hide="$root.currentUser">Sign in to comment!</li></strong>
+            <li ng-show="$root.currentUser">
+              <form class="new-comment"
+                  ng-submit="addComment(task, newComment); newComment=''">
+              <input class="new-comment-input" ng-model="newComment" type="text"
+                     placeholder=" New Comment" name="text"/>
+              </form>
+            </li>
             <li ng-repeat="comment in task.comments">
               {{ comment.username }} - {{ comment.text }}
               <button class="delete" ng-click="deleteComment(task, comment)"
