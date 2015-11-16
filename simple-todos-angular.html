@@ -121,10 +121,10 @@
 
               <li ng-repeat="comment in task.comments">
                 {{ comment.username }} - {{ comment.text }}
-                <button class="delete" ng-click="deleteComment(task, comment)"
-                        ng-show="comment.username === $root.currentUser.username">
-                  &times;
-                </button>
+                <i class="fa fa-close delete"
+                   ng-click="deleteComment(task, comment)"
+                   ng-show="comment.username === $root.currentUser.username">
+                </i>
               </li>
             </ul>
 
