@@ -17,6 +17,9 @@
     <login-buttons><br></login-buttons>
 
     <br>
+
+    <!-- hide completed tasks button -->
+
     <label class="checkbox-label" for="toggle" class="hide-completed">
       <input class="checkbox-input" id="toggle" type="checkbox" ng-model="hideCompleted"/>
       <span ng-hide="hideCompleted" class="checkbox-span">Hide Completed Tasks</span>
@@ -25,15 +28,26 @@
 
     <br><br>
 
+    <!-- new task form -->
 
     <form class="new-task"
           ng-submit="addTask(newTask);  newTask='';"
           ng-show="$root.currentUser">
-      <input class="new-task-input" type="text" ng-model="newTask" placeholder=" New Task" name="text"/>
+
+      <input class="new-task-input" type="text"
+             ng-model="newTask" placeholder=" New Task"
+             name="text"/>
     </form>
 
+    <!-- tasks list -->
+
     <ul>
-      <li ng-repeat="task in tasks | orderBy:'upvotes.length - downvotes.length':true" class="group" ng-class="{ 'checked': task.checked }">
+      <li ng-repeat="task in tasks | orderBy:'upvotes.length -
+          downvotes.length':true" class="group"
+          ng-class="{ 'checked': task.checked, 'private': task.private }">
+
+        <!-- upvotes/downvotes -->
+
         <div class="voting-wrapper">
           <i class="fa fa-sort-up fa-2x vote-marker"
              ng-click="upvote(task, $root.currentUser)"></i>
@@ -41,29 +55,60 @@
           <i class="fa fa-sort-down fa-2x vote-marker"
              ng-click="downvote(task, $root.currentUser)"></i>
         </div>
+
+        <!-- content for tasks -->
+
         <div class="content-wrapper group">
 
-          <input type="checkbox" ng-checked="task.checked"
-                 ng-click="setChecked(task)" class="toggle-checked"
-                 ng-show="task.username === $root.currentUser.username">
+
+
+          <!-- private tasks -->
+
+          <i class="fa fa-lg set-private"
+             ng-class="{ 'fa-user': task.private, 'fa-user-plus': !task.private }"
+             ng-if="task.owner === $root.currentUser._id"
+             ng-click="setPrivate(task)"></i>
+
+
+          <!-- task details -->
+
           <span class="text">
             <strong>{{ task.username }}</strong> - {{task.text}}
           </span>
 
-          <span class="task-actions">
-            <button class="delete" ng-click="deleteTask(task)"
-                    ng-show="task.username === $root.currentUser.username">
-              &times;
-            </button>
+          <!-- task actions -->
 
-            <button ng-click="toggleComments(task)" class="toggle-comments">{{ task.showComments ? 'Hide' : 'Show' }} Comments</button>
+          <span class="task-actions">
+
+            <!-- delete task button -->
+
+            <i class="delete fa fa-close fa-lg task-action"
+               ng-click="deleteTask(task)"
+               ng-show="task.username === $root.currentUser.username">
+            </i>
+
+            <!-- toggle comments button -->
+
+            <span ng-click="toggleComments(task)" class="toggle-comments task-action">{{ task.showComments ? 'Hide' : 'Show' }} Comments</span>
+
+            <!-- toggle completion -->
+
+            <input type="checkbox" ng-checked="task.checked"
+                   name="completion-checkbox"
+                   class="task-action"
+                   ng-click="setChecked(task)" class="toggle-checked"
+                   ng-show="task.username === $root.currentUser.username">
           </span>
 
+          <!-- task comments -->
 
           <div class="comments" ng-show="task.showComments">
 
             <ul>
               <strong><li ng-hide="$root.currentUser">Sign in to comment!</li></strong>
+
+              <!-- comments form -->
+
               <li ng-show="$root.currentUser">
                 <form class="new-comment"
                     ng-submit="addComment(task, newComment); newComment=''">
@@ -71,10 +116,13 @@
                        placeholder=" New Comment" name="text"/>
                 </form>
               </li>
+
+              <!-- comments list -->
+
               <li ng-repeat="comment in task.comments">
                 {{ comment.username }} - {{ comment.text }}
                 <button class="delete" ng-click="deleteComment(task, comment)"
-                        ng-show="task.username === $root.currentUser.username">
+                        ng-show="comment.username === $root.currentUser.username">
                   &times;
                 </button>
               </li>
@@ -86,4 +134,6 @@
       </li>
     </ul>
   </div>
+
+
 </body>
