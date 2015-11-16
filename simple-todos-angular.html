@@ -43,7 +43,7 @@
 
     <ul>
       <li ng-repeat="task in tasks | orderBy:'upvotes.length -
-          downvotes.length':true" class="group"
+          downvotes.length':true" class="group list-item"
           ng-class="{ 'checked': task.checked, 'private': task.private }">
 
         <!-- upvotes/downvotes -->
@@ -65,7 +65,7 @@
           <!-- private tasks -->
 
           <i class="fa fa-lg set-private"
-             ng-class="{ 'fa-user': task.private, 'fa-user-plus': !task.private }"
+             ng-class="{ 'fa-user': task.private, 'fa-globe': !task.private }"
              ng-if="task.owner === $root.currentUser._id"
              ng-click="setPrivate(task)"></i>
 
@@ -78,26 +78,39 @@
 
           <!-- task actions -->
 
-          <span class="task-actions">
+          <span class="dropdown task-actions">
+            <button class="btn btn-default dropdown-toggle" type="button"
+                    id="dropdownMenu1" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="true">
+            Actions
+            <span class="caret"></span>
+            </button>
 
-            <!-- delete task button -->
+            <!-- task action dropdown menu -->
 
-            <i class="delete fa fa-close fa-lg task-action"
-               ng-click="deleteTask(task)"
-               ng-show="task.username === $root.currentUser.username">
-            </i>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 
-            <!-- toggle comments button -->
+              <!-- toggle comments button -->
+              <li ng-click="toggleComments(task)"
+                  class="dropdown-item">
+                  {{ task.showComments ? 'Hide' : 'Show' }} Comments</li>
 
-            <span ng-click="toggleComments(task)" class="toggle-comments task-action">{{ task.showComments ? 'Hide' : 'Show' }} Comments</span>
+              <!-- toggle completion -->
+              <li ng-click="setChecked(task)"
+                  ng-show="task.username === $root.currentUser.username"
+                  class="dropdown-item">
+                  Mark as {{ task.completed ? 'Incomplete' : 'Complete' }}</li>
 
-            <!-- toggle completion -->
+              <!-- separator -->
+              <li role="separator" class="divider"></li>
 
-            <input type="checkbox" ng-checked="task.checked"
-                   name="completion-checkbox"
-                   class="task-action"
-                   ng-click="setChecked(task)" class="toggle-checked"
-                   ng-show="task.username === $root.currentUser.username">
+              <!-- delete task button -->
+              <li ng-click="deleteTask(task)"
+                  ng-show="task.username === $root.currentUser.username"
+                  class="dropdown-item">
+                  Delete</li>
+            </ul>
+
           </span>
 
           <!-- task comments -->
@@ -109,9 +122,9 @@
 
               <!-- comments form -->
 
-              <li ng-show="$root.currentUser">
+              <li ng-show="$root.currentUser" class="list-item">
                 <form class="new-comment"
-                    ng-submit="addComment(task, newComment); newComment=''">
+                      ng-submit="addComment(task, newComment); newComment=''">
                 <input class="new-comment-input" ng-model="newComment" type="text"
                        placeholder=" New Comment" name="text"/>
                 </form>
@@ -119,7 +132,7 @@
 
               <!-- comments list -->
 
-              <li ng-repeat="comment in task.comments">
+              <li ng-repeat="comment in task.comments" class="list-item">
                 {{ comment.username }} - {{ comment.text }}
                 <i class="fa fa-close delete"
                    ng-click="deleteComment(task, comment)"

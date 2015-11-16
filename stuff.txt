@@ -1,2 +1,22 @@
 ng-class="{voted: upvoted(task, $root.currentUser)}"
 ng-class="{voted: downvoted(task, $root.currentUser)}"
+
+<i class="delete fa fa-close fa-lg task-action"
+   ng-click="deleteTask(task)"
+   ng-show="task.username === $root.currentUser.username">
+</i>
+
+<!-- toggle comments button -->
+
+<span ng-click="toggleComments(task)" class="toggle-comments task-action">{{ task.showComments ? 'Hide' : 'Show' }} Comments</span>
+
+<!-- toggle completion -->
+<label class="toggle-completion-button">
+  <input type="checkbox" ng-checked="task.checked"
+         name="completion-checkbox"
+         class="checkbox-input toggle-completion"
+         ng-click="setChecked(task)" class="toggle-checked"
+         ng-show="task.username === $root.currentUser.username">
+  <span ng-hide="task.completed" class="completion-checkbox">Mark as Completed</span>
+  <span ng-show="task.completed" class="completion-checkbox">Mark as Incomplete</span>
+</label>

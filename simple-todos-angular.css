@@ -71,7 +71,7 @@
     background: white;
   }
 
-  li {
+  .list-item {
     margin-left: 15px;
     position: relative;
     list-style: none;
@@ -79,7 +79,7 @@
     border-bottom: #eee solid 1px;
   }
 
-  li .text {
+  .list-item .text {
     margin-left: 10px;
   }
 
@@ -126,60 +126,64 @@
 
   .task-actions {
     float: right;
-    width: 200px;
   }
 
-  /* new task */
+    /* new task */
 
-  .new-task input {
-    margin: 0 0 15px 15px;
-    border: 1px solid #000000;
-    box-sizing: border-box;
-    padding: 15px 5px;
-    background: transparent;
-    padding-right: 80px;
-    font-size: 1em;
-  }
+    .new-task input {
+      margin: 0 0 15px 15px;
+      border: 1px solid #000000;
+      box-sizing: border-box;
+      padding: 15px 5px;
+      background: transparent;
+      padding-right: 80px;
+      font-size: 1em;
+    }
 
-  .new-task input:focus{
-    outline: 0;
-  }
+    .new-task input:focus{
+      outline: 0;
+    }
 
-  /* delete task */
+    /* delete task */
 
-  .delete {
-    float: right;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
+    .delete {
+      margin-top: 2px;
+      float: right;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
 
-  .delete:hover {
-    color: #777777;
-  }
+    .delete:hover {
+      color: #777777;
+    }
 
 
-  /* toggle task comments */
+    /* toggle task comments */
 
-  .toggle-comments {
-    float: right;
-    border: none;
-    cursor: pointer;
-    transition: color 0.2s;
-  }
+    .toggle-comments {
+      float: right;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
 
-  .toggle-comments:hover {
-    color: #777777
-  }
+    .toggle-comments:hover {
+      color: #777777
+    }
 
-  /* completed tasks */
+    /* completed tasks */
 
-  li.checked {
-    color: #888;
-  }
+    .toggle-completion {
+      float: right;
+    }
 
-  li.checked .text {
-    text-decoration: line-through;
-  }
+    li.checked {
+      color: #888;
+    }
+
+    li.checked .text {
+      text-decoration: line-through;
+    }
 
   /* private tasks */
 
@@ -190,6 +194,10 @@
 
   .set-private {
     cursor: pointer;
+  }
+
+  .set-private:hover {
+    color: #777777;
   }
 
   /* toggle completed tasks */
@@ -218,6 +226,25 @@
 
   .checkbox-input {
     display: none;
+  }
+
+  /* dropdown menu */
+
+  .dropdown-item {
+    margin: 5px 0 5px 5px;
+    cursor: pointer;
+  }
+
+  .dropdown-item:hover {
+    color: #777777;
+  }
+
+  .dropdown-toggle {
+    outline: 0;
+  }
+
+  .dropdown-toggle:focus {
+    outline: 0;
   }
 
   /* media */
