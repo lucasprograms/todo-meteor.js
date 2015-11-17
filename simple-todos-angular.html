@@ -9,7 +9,7 @@
 
     <header>
       <div class="page-header">
-        <h1>Absurd <small>A Collaborative Task Management Reddit Clone?</small></h1>
+        <h1>Absurd <br><small>A Collaborative Task Management Reddit Clone?</small></h1>
       </div>
       <br>
       <h3>Tasks to Complete: {{ incompleteCount() }}</h3>
@@ -24,8 +24,8 @@
 
     <label class="checkbox-label" for="toggle" class="hide-completed">
       <input class="checkbox-input" id="toggle" type="checkbox" ng-model="hideCompleted"/>
-      <span ng-hide="hideCompleted" class="checkbox-span">Hide Completed Tasks</span>
-      <span ng-show="hideCompleted" class="checkbox-span">Show Completed Tasks</span>
+      <span ng-hide="hideCompleted" class="btn checkbox-span">Hide Completed Tasks</span>
+      <span ng-show="hideCompleted" class="btn checkbox-span">Show Completed Tasks</span>
     </label>
 
     <br><br>
