@@ -274,7 +274,7 @@
 
   .login-link-text {
     float: right;
-    margin: 15px;
+    margin: 20px 15px 15px 15px;
     padding: 5px;
     border: 1px solid #000000;
   }
