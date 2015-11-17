@@ -261,6 +261,10 @@
     }
   }
 
+  i.fa {
+    display: inline-block;
+  }
+
 
   /* login */
 

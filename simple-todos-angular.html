@@ -1,5 +1,12 @@
 <head><!-- Latest compiled and minified CSS -->
   <title>Absurd</title>
+  <script type="text/javascript">
+
+      $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+      });
+
+  </script>
 </head>
 
 <body>
@@ -49,28 +56,35 @@
           ng-class="{ 'checked': task.checked, 'private': task.private }">
 
         <!-- upvotes/downvotes -->
+          <div class="voting-wrapper" ng-if="$root.currentUser">
+            <i class="fa fa-sort-up fa-2x vote-marker"
+               ng-click="upvote(task, $root.currentUser)"
+               ng-class="{voted: upvoted(task, $root.currentUser)}"></i>
 
-        <div class="voting-wrapper">
-          <i class="fa fa-sort-up fa-2x vote-marker"
-             ng-click="upvote(task, $root.currentUser)"
-             ng-class="{voted: upvoted(task, $root.currentUser)}"></i>
+            <span class="votes">{{ votes(task) }}</span>
+            <i class="fa fa-sort-down fa-2x vote-marker"
+               ng-click="downvote(task, $root.currentUser)"
+               ng-class="{voted: downvoted(task, $root.currentUser)}"></i>
+          </div>
+
+          <div class="voting-wrapper"
+               data-toggle="tooltip" title="Sign In to Vote!"
+               ng-if="!$root.currentUser">
+          <i class="fa fa-sort-up fa-2x vote-marker"></i>
+
           <span class="votes">{{ votes(task) }}</span>
-          <i class="fa fa-sort-down fa-2x vote-marker"
-             ng-click="downvote(task, $root.currentUser)"
-             ng-class="{voted: downvoted(task, $root.currentUser)}"></i>
+          <i class="fa fa-sort-down fa-2x vote-marker"></i>
         </div>
+
 
         <!-- content for tasks -->
 
         <div class="content-wrapper group">
 
-
-
           <!-- private tasks -->
 
           <i class="fa fa-lg set-private"
-             ng-class="{ 'fa-user': task.private, 'fa-globe': !task.private }"
-             ></i>
+             ng-class="{ 'fa-user': task.private, 'fa-globe': !task.private }"></i>
 
 
           <!-- task details -->
@@ -82,6 +96,7 @@
           <!-- task actions -->
 
           <span class="dropdown task-actions">
+
             <button class="btn btn-default dropdown-toggle" type="button"
                     id="dropdownMenu1" data-toggle="dropdown"
                     aria-haspopup="true" aria-expanded="true">
@@ -130,7 +145,7 @@
           <div class="comments" ng-show="task.showComments">
 
             <ul>
-              <strong><li ng-hide="$root.currentUser">Sign in to comment!</li></strong>
+              <strong><li class="list-item comment-list-item" ng-hide="$root.currentUser">Sign in to comment!</li></strong>
 
               <!-- comments form -->
 
@@ -162,6 +177,7 @@
         </div>
       </li>
     </ul>
+
   </div>
 
 
