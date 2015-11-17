@@ -21,13 +21,8 @@
     font-size: 14px;
   }
 
-  h1, h3 {
-    color: #ffffff;
-    font-size: 1.5em;
-    margin: 0;
-    margin-bottom: 10px;
-    display: inline-block;
-    margin-right: 1em;
+  h3 {
+    color: #999999;
   }
 
   form {
@@ -241,6 +236,11 @@
 
   .dropdown-toggle:focus {
     outline: 0;
+  }
+
+  button#dropdownMenu1 {
+    position: relative;
+    z-index: 2;
   }
 
   /* comment items */

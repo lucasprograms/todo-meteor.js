@@ -1,2 +1,1 @@
-ng-class="{voted: upvoted(task, $root.currentUser)}"
-ng-class="{voted: downvoted(task, $root.currentUser)}"
+
