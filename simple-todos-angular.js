@@ -1,5 +1,11 @@
 Tasks = new Mongo.Collection('tasks');
 
+TasksIndex = new EasySearch.Index({
+  collection: Tasks,
+  fields: ['username'],
+  engine: new EasySearch.Minimongo()
+});
+
 if (Meteor.isClient) {
   Accounts.ui.config({
     passwordSignupFields: "USERNAME_ONLY"
@@ -7,7 +13,7 @@ if (Meteor.isClient) {
 
   angular.module('simple-todos', ['angular-meteor', 'accounts.ui']);
 
-  angular.module('simple-todos').controller('TodosAppCtrl', ['$scope', '$meteor',
+  angular.module('simple-todos').controller('TodosAppController', ['$scope', '$meteor',
     function ($scope, $meteor) {
 
       $scope.$meteorSubscribe('tasks');
@@ -19,6 +25,19 @@ if (Meteor.isClient) {
           sort: { createdAt: -1 }
         });
       });
+
+      // search methods
+
+      $scope.performSearch = function (params) {
+        $scope.results = [];
+        params = params.split(' ');
+
+        _.each(params, function(param) {
+          $scope.results.push(TasksIndex.search(param).fetch());
+        });
+
+        $scope.results = _.flatten($scope.results);
+      };
 
       // task methods
 
@@ -93,6 +112,8 @@ if (Meteor.isClient) {
         }
       });
     }]);
+
+
 }
 
 Meteor.methods({

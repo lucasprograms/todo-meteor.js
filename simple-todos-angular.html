@@ -7,12 +7,14 @@
       });
 
   </script>
+
 </head>
 
 <body>
+
   <div  class="container everything-wrapper"
         ng-app="simple-todos"
-        ng-controller="TodosAppCtrl">
+        ng-controller="TodosAppController">
 
     <header>
       <div class="page-header">
@@ -36,6 +38,18 @@
     </label>
 
     <br><br>
+
+    <!-- search form -->
+
+    <form class="search-form" ng-submit="performSearch(searchParams); searchParams=''";>
+      <input type="text" ng-model="searchParams" placeholder="Search">
+    </form>
+
+    <!-- search results -->
+
+    <ul ng-repeat="result in results">
+      <li class="list-item">{{ result.text}} - {{ result.username }}</li>
+    </ul>
 
     <!-- new task form -->
 
@@ -145,13 +159,15 @@
           <div class="comments" ng-show="task.showComments">
 
             <ul>
-              <strong><li class="list-item comment-list-item" ng-hide="$root.currentUser">Sign in to comment!</li></strong>
+              <strong><li class="list-item comment-list-item" ng-hide="$root.currentUser">
+                Sign in to comment!
+              </li></strong>
 
               <!-- comments form -->
 
               <li ng-show="$root.currentUser"
                   class="list-item comment-list-item"
-                  ng-class="{'private': task.private}">
+                  ng-class="{ 'private': task.private }">
                 <form class="new-comment"
                       ng-submit="addComment(task, newComment); newComment=''">
                 <input class="new-comment-input" ng-model="newComment" type="text"
@@ -160,6 +176,7 @@
               </li>
 
               <!-- comments list -->
+
 
               <li ng-repeat="comment in task.comments"
                   class="list-item comment-list-item"
@@ -179,6 +196,4 @@
     </ul>
 
   </div>
-
-
 </body>
