@@ -1,0 +1,197 @@
+
+  <title>Absurd</title>
+  <script type="text/javascript">
+      $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+      });
+  </script>
+
+</head>
+
+<body>
+
+  <div  class="container everything-wrapper"
+        ng-app="simple-todos"
+        ng-controller="TodosAppController">
+
+    <header>
+      <div class="page-header">
+        <h1>Absurd <br><small>A Collaborative Task Management Reddit Clone?</small></h1>
+      </div>
+      <br>
+      <h3>Tasks to Complete: {{ incompleteCount() }}</h3>
+
+    </header>
+
+    <login-buttons><br></login-buttons>
+
+    <br>
+
+    <!-- hide completed tasks button -->
+
+    <label class="checkbox-label" for="toggle" class="hide-completed">
+      <input class="checkbox-input" id="toggle" type="checkbox" ng-model="hideCompleted"/>
+      <span ng-hide="hideCompleted" class="btn checkbox-span">Hide Completed Tasks</span>
+      <span ng-show="hideCompleted" class="btn checkbox-span">Show Completed Tasks</span>
+    </label>
+
+    <br><br>
+
+    <!-- search form -->
+
+    <form class="search-form" ng-submit="performSearch(searchParams); searchParams=''";>
+      <input type="text" ng-model="searchParams" placeholder="Search">
+    </form>
+
+    <!-- search results -->
+
+    <ul ng-repeat="result in results">
+      <li class="list-item">{{ result.text}} - {{ result.username }}</li>
+    </ul>
+
+    <!-- new task form -->
+
+    <form class="new-task"
+          ng-submit="addTask(newTask);  newTask='';"
+          ng-show="$root.currentUser">
+
+      <input class="new-task-input" type="text"
+             ng-model="newTask" placeholder=" New Task"
+             name="text"/>
+    </form>
+
+    <!-- tasks list -->
+
+    <ul ng-sortable>
+      <li ng-repeat="task in tasks | orderBy:'upvotes.length -
+          downvotes.length':true" class="group list-item"
+          ng-class="{ 'checked': task.checked, 'private': task.private }">
+
+        <!-- upvotes/downvotes -->
+          <div class="voting-wrapper" ng-if="$root.currentUser">
+            <i class="fa fa-sort-up fa-2x vote-marker"
+               ng-click="upvote(task, $root.currentUser)"
+               ng-class="{voted: upvoted(task, $root.currentUser)}"></i>
+
+            <span class="votes">{{ votes(task) }}</span>
+            <i class="fa fa-sort-down fa-2x vote-marker"
+               ng-click="downvote(task, $root.currentUser)"
+               ng-class="{voted: downvoted(task, $root.currentUser)}"></i>
+          </div>
+
+          <div class="voting-wrapper"
+               data-toggle="tooltip" title="Sign in to Vote!"
+               ng-if="!$root.currentUser">
+          <i class="fa fa-sort-up fa-2x vote-marker"></i>
+
+          <span class="votes">{{ votes(task) }}</span>
+          <i class="fa fa-sort-down fa-2x vote-marker"></i>
+        </div>
+
+
+        <!-- content for tasks -->
+
+        <div class="content-wrapper group">
+
+          <!-- private tasks -->
+
+          <i class="fa fa-lg set-private"
+             ng-class="{ 'fa-user': task.private, 'fa-globe': !task.private }"></i>
+
+
+          <!-- task details -->
+
+          <span class="text">
+            <strong>{{ task.username }}</strong> - {{task.text}}
+          </span>
+
+          <!-- task actions -->
+
+          <span class="dropdown task-actions">
+
+            <button class="btn btn-default dropdown-toggle" type="button"
+                    id="dropdownMenu1" data-toggle="dropdown"
+                    aria-haspopup="true" aria-expanded="true">
+            Actions
+            <span class="caret"></span>
+            </button>
+
+            <!-- task action dropdown menu -->
+
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+
+              <!-- toggle comments button -->
+              <li ng-click="toggleComments(task)"
+                  class="dropdown-item">
+                  {{ task.showComments ? 'Hide' : 'Show' }} Comments</li>
+
+              <!-- toggle completion -->
+              <li ng-click="setChecked(task)"
+                  ng-show="task.username === $root.currentUser.username"
+                  class="dropdown-item">
+                  Mark as {{ task.checked ? 'Incomplete' : 'Complete' }}</li>
+
+              <!-- toggle public/private -->
+
+              <li ng-click="setPrivate(task)"
+                  ng-show="task.username === $root.currentUser.username"
+                  class="dropdown-item">
+                  Mark as {{ task.private ? 'Public' : 'Private' }}</li>
+
+              <!-- separator -->
+              <li role="separator" class="divider"
+                  ng-show="task.username === $root.currentUser.username">
+              </li>
+
+              <!-- delete task button -->
+              <li ng-click="deleteTask(task)"
+                  ng-show="task.username === $root.currentUser.username"
+                  class="dropdown-item">
+                  Delete</li>
+            </ul>
+
+          </span>
+
+          <!-- task comments -->
+
+          <div class="comments" ng-show="task.showComments">
+
+            <ul>
+              <strong><li class="list-item comment-list-item" ng-hide="$root.currentUser">
+                Sign in to comment!
+              </li></strong>
+
+              <!-- comments form -->
+
+              <li ng-show="$root.currentUser"
+                  class="list-item comment-list-item"
+                  ng-class="{ 'private': task.private }">
+                <form class="new-comment"
+                      ng-submit="addComment(task, newComment); newComment=''">
+                <input class="new-comment-input" ng-model="newComment" type="text"
+                       placeholder=" New Comment" name="text"/>
+                </form>
+              </li>
+
+              <!-- comments list -->
+
+
+              <li ng-repeat="comment in task.comments"
+                  class="list-item comment-list-item"
+                  ng-class="{'private': task.private}">
+                {{ comment.username }} - {{ comment.text }}
+                <i class="fa fa-close delete"
+                   ng-click="deleteComment(task, comment)"
+                   ng-show="comment.username === $root.currentUser.username">
+                </i>
+              </li>
+            </ul>
+
+          </div>
+
+        </div>
+      </li>
+    </ul>
+
+  </div>
+</body>
